@@ -4,6 +4,7 @@ import (
 	"bitcoin/block"
 	"flag"
 	"fmt"
+	"golang.org/x/crypto/ssh/terminal"
 	"log"
 	"os"
 )
@@ -17,6 +18,12 @@ const USAGE = `
  		addblock -data BLOCK_data  add a block to blockchain(向区块链中添加一个区块 简称挖矿 eg: addblock -data 11)
 		printChain 				   print all block of the chain(打印区块链中所有区块)
 `
+
+const prompt = "bitCoin>"
+
+var (
+	oldTermState *terminal.State
+)
 
 func NewCli(bc *block.BlockChain) *CLI {
 	return &CLI{blockChain: bc}
