@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"fmt"
+	"github.com/fatih/color"
 	"math/big"
 	"time"
 )
@@ -47,17 +48,17 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 	nonce := 0
 
 	start := time.Now()
-	fmt.Printf("Mining the block %s\n", pow.block.Data)
+	fmt.Printf(color.YellowString("Mining the block %s\n", pow.block.Data))
 	fmt.Printf("start time: %v\n", start)
 	for nonce < constant.MAX_NONCE {
 		data := pow.prepareData(nonce)
 		hash = sha256.Sum256(data)
 		hashInt.SetBytes(hash[:])
-		fmt.Printf("nonce: %d  hash: %x\r", nonce, hash)
+		fmt.Printf(color.GreenString("nonce: %d  hash: %x\r", nonce, hash))
 		if hashInt.Cmp(pow.target) == -1 {
-			fmt.Printf("%x\n", hash)
+			fmt.Printf(color.RedString("%x\n", hash))
 			duration := time.Since(start)
-			fmt.Printf("spend time: %v\n", duration)
+			fmt.Printf(color.RedString("spend time: %v\n", duration))
 			break
 		} else {
 			nonce++

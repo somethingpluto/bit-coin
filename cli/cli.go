@@ -36,22 +36,25 @@ func (cli *CLI) printUsage() {
 	fmt.Println(USAGE)
 }
 
+// Run
+// @Description: 脚手架运行
+// @receiver cli
 func (cli *CLI) Run() {
 	cli.printUsage()
 	option := ""
-	args := []string{}
+	var args []string
 	for true {
 		fmt.Printf(color.GreenString("%s", shell))
 		reader := bufio.NewReader(os.Stdin)
-		option, _ = reader.ReadString('\n')
+		option, _ = reader.ReadString('\r')
+		option = strings.Replace(option, "\r", "", -1)
 		args = strings.Split(option, " ")
-		fmt.Println(args)
 		switch args[0] {
 		case "printchain":
 			cli.printChain()
 			break
 		case "addblock":
-			if args[1] != "data" || args[2] == "" {
+			if len(args) != 3 || args[1] != "data" || args[2] == "" {
 				fmt.Println("addblock command invalid")
 				cli.printUsage()
 				break
