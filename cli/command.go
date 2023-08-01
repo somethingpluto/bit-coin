@@ -11,7 +11,6 @@ import (
 
 func (cli *CLI) printChain() {
 	bci := cli.blockChain.Iterator()
-
 	for {
 		b := bci.Next()
 		fmt.Printf("|=================================================================================|\n")
@@ -29,4 +28,17 @@ func (cli *CLI) printChain() {
 			break
 		}
 	}
+}
+
+func (cli *CLI) addBlock(args []string) {
+	if len(args) != 3 || args[1] != "data" || args[2] == "" {
+		fmt.Println("addblock command invalid")
+		cli.printUsage()
+	} else {
+		cli.blockChain.AddBlock(args[2])
+	}
+}
+
+func (cli *CLI) help() {
+	fmt.Printf(color.RedString("%s", USAGE))
 }

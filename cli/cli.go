@@ -17,8 +17,8 @@ type CLI struct {
 
 const USAGE = `
 Usage:
-	addblock -data BLOCK_data  add a block to blockchain(向区块链中添加一个区块 简称挖矿 eg: addblock -data 11)
- 	printChain 				   print all block of the chain(打印区块链中所有区块)
+	addblock data BLOCK_data  add a block to blockchain(向区块链中添加一个区块 简称挖矿 eg: addblock -data 11)
+ 	printChain 				  print all block of the chain(打印区块链中所有区块 eg: 直接打印出)
 `
 
 // NewCli
@@ -40,7 +40,7 @@ func (cli *CLI) printUsage() {
 // @Description: 脚手架运行
 // @receiver cli
 func (cli *CLI) Run() {
-	cli.printUsage()
+	cli.help()
 	option := ""
 	var args []string
 	for true {
@@ -54,18 +54,15 @@ func (cli *CLI) Run() {
 			cli.printChain()
 			break
 		case "addblock":
-			if len(args) != 3 || args[1] != "data" || args[2] == "" {
-				fmt.Println("addblock command invalid")
-				cli.printUsage()
-				break
-			} else {
-				cli.blockChain.AddBlock(args[2])
-			}
+			cli.addBlock(args)
+			break
+		case "help":
+			cli.help()
 		case "quit":
 			return
 		default:
 			fmt.Println("invalid input")
-			fmt.Println(USAGE)
+			cli.help()
 		}
 	}
 }

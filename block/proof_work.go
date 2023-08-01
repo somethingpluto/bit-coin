@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+const TIME_FORMAT = "2006-01-02 15:04:05"
+
 type ProofOfWork struct {
 	block  *Block
 	target *big.Int
@@ -48,8 +50,9 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 	nonce := 0
 
 	start := time.Now()
+	startFormat := start.Format(TIME_FORMAT)
 	fmt.Printf(color.YellowString("Mining the block %s\n", pow.block.Data))
-	fmt.Printf("start time: %v\n", start)
+	fmt.Printf("start time: %v\n", startFormat)
 	for nonce < constant.MAX_NONCE {
 		data := pow.prepareData(nonce)
 		hash = sha256.Sum256(data)
